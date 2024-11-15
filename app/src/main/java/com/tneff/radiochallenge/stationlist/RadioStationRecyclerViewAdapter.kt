@@ -1,13 +1,9 @@
 package com.tneff.radiochallenge.stationlist
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.tneff.radiochallenge.R
-
-import com.tneff.radiochallenge.stationlist.placeholder.PlaceholderContent.PlaceholderItem
+import androidx.recyclerview.widget.RecyclerView
 import com.tneff.radiochallenge.databinding.ItemRadioStationBinding
 import com.tneff.radiochallenge.stations.RadioStation
 
@@ -34,7 +30,7 @@ class RadioStationRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
+        holder.idView.text = item.city
         holder.contentView.text = item.name
         holder.itemView.setOnClickListener { onClick(item) }
     }
@@ -43,8 +39,8 @@ class RadioStationRecyclerViewAdapter(
 
     inner class ViewHolder(binding: ItemRadioStationBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val idView: TextView = binding.itemNumber
-        val contentView: TextView = binding.content
+        val idView: TextView = binding.line1
+        val contentView: TextView = binding.line2
 
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"

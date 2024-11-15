@@ -1,7 +1,9 @@
 package com.tneff.radiochallenge.stations
 
+import android.util.Log
 import com.tneff.radiochallenge.stations.network.RadioStationApiService
 import com.tneff.radiochallenge.stations.network.RetrofitClient
+import com.tneff.radiochallenge.stations.network.data.Playable
 
 class RadioStationNetworkDataSource {
 
@@ -9,12 +11,21 @@ class RadioStationNetworkDataSource {
 
 
     suspend fun getRadioStations(): List<RadioStation> {
-        return apiService.getRadioStations()
-//        return listOf(
-//            RadioStation("1", "Radio One", "http://radioone.com"),
-//            RadioStation("2", "Classic FM", "http://classicfm.com"),
-//            RadioStation("3", "Jazz Vibes", "http://jazzvibes.com"),
-//            RadioStation("4", "Pop Hits", "http://pophits.com")
-//        )
+        val stations = mapPlayablesToRadioStations(apiService.getRadioStations().playables)
+        Log.d("STATIONS","Size: ${stations.size}")
+        return stations
+    }
+
+    private fun mapPlayablesToRadioStations(playables: List<Playable>): List<RadioStation> {
+        return playables.map { playable ->
+            RadioStation(
+                id = playable.id,
+                name = playable.name,
+                city = playable.city,
+                country = playable.country,
+                genres = playable.genres,
+                url = playable.logo300x300 // Hier wird das Logo als URL verwendet, anpassen, falls ein Stream-URL benötigt wird
+            )
+        }
     }
 }
