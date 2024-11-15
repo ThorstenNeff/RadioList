@@ -2,8 +2,10 @@ package com.tneff.radiochallenge.stationlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.tneff.radiochallenge.R
 import com.tneff.radiochallenge.databinding.ItemRadioStationBinding
 import com.tneff.radiochallenge.stations.RadioStation
@@ -38,6 +40,7 @@ class RadioStationRecyclerViewAdapter(
         } else {
             ""
         }
+        holder.imageView.load(item.url)
         holder.idView.text = location
         holder.contentView.text = item.name
         holder.itemView.setOnClickListener { onClick(item) }
@@ -49,7 +52,7 @@ class RadioStationRecyclerViewAdapter(
         RecyclerView.ViewHolder(binding.root) {
         val idView: TextView = binding.line1
         val contentView: TextView = binding.line2
-
+        val imageView: ImageView = binding.radioLogo
         override fun toString(): String {
             return super.toString() + " '" + contentView.text + "'"
         }
