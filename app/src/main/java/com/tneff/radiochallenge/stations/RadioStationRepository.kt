@@ -16,4 +16,8 @@ class RadioStationRepository(
         localDataSource.storeStations(stations)
         return stations
     }
+
+    fun getStation(radioId: String): RadioStation? {
+        return localDataSource.getStation(radioId)
+    }
 }

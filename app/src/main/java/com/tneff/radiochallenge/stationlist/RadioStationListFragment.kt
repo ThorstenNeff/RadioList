@@ -1,22 +1,18 @@
 package com.tneff.radiochallenge.stationlist
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.tneff.radiochallenge.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tneff.radiochallenge.databinding.FragmentRadioStationListBinding
-import com.tneff.radiochallenge.stationlist.placeholder.PlaceholderContent
+import com.tneff.radiochallenge.stations.RadioStation
 import kotlinx.coroutines.launch
 
 /**
@@ -24,7 +20,7 @@ import kotlinx.coroutines.launch
  */
 class RadioStationListFragment : Fragment() {
 
-    private val viewModel: RadioStationListViewModel by viewModels()
+    private val viewModel: RadioStationListViewModel = RadioStationListViewModel()
     private lateinit var binding: FragmentRadioStationListBinding
     private lateinit var adapter: RadioStationRecyclerViewAdapter
 
@@ -44,11 +40,15 @@ class RadioStationListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRadioStationListBinding.inflate(inflater, container, false)
-        adapter = RadioStationRecyclerViewAdapter(listOf()) {
-
+        adapter = RadioStationRecyclerViewAdapter(listOf()) { station: RadioStation ->
+            showStation(station)
         }
         binding.stationRV.adapter = adapter
         binding.stationRV.layoutManager = LinearLayoutManager(requireContext())
         return binding.root
+    }
+
+    private fun showStation(station: RadioStation) {
+        findNavController().navigate(RadioStationListFragmentDirections.actionToDetail(station.id))
     }
 }

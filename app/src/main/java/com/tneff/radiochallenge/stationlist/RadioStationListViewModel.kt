@@ -8,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class RadioStationListViewModel(
-    private val radioStationRepository: RadioStationRepository,
-) : ViewModel() {
+class RadioStationListViewModel : ViewModel() {
+
+    private val radioStationRepository: RadioStationRepository = RadioStationRepository()
 
     private val _radioStations = MutableStateFlow<List<RadioStation>>(emptyList())
     val radioStations: StateFlow<List<RadioStation>> get() = _radioStations
