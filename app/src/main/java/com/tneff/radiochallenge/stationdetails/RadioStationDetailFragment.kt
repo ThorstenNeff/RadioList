@@ -2,6 +2,7 @@ package com.tneff.radiochallenge.stationdetails
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
+import coil.load
 import com.tneff.radiochallenge.R
 import com.tneff.radiochallenge.databinding.FragmentRadioStationDetailBinding
 import com.tneff.radiochallenge.databinding.FragmentRadioStationListBinding
@@ -25,11 +27,10 @@ class RadioStationDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.loadStation(args.stationId)
-                viewModel.radioStation.collect { station ->
-                    updateStation(station)
-                }
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                val station = viewModel.loadStation(args.stationId)
+                Log.d("STATION","Station ${station?.name}")
+                updateStation(station)
             }
         }
     }
@@ -42,7 +43,20 @@ class RadioStationDetailFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateStation(station: RadioStation?) {
-        binding.stationNameTv.text = station?.name ?: ""
+    private fun updateStation(radioStation: RadioStation?) {
+        radioStation?.let { station ->
+            val location = if (station.city.isNotEmpty()) {
+                station.city
+            } else if (station.country.isNotEmpty()) {
+                station.country
+            } else {
+                ""
+            }
+            binding.stationLogo.load(station.url)
+            binding.stationNameTv.text = station.name
+            binding.stationLocationTv.text = location
+            binding.stationGenresTv.text = station.genres.joinToString(separator = ", ")
+        }
+
     }
 }
