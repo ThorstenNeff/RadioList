@@ -12,7 +12,6 @@ class RadioStationNetworkDataSource {
 
     suspend fun getRadioStations(): List<RadioStation> {
         val stations = mapPlayablesToRadioStations(apiService.getRadioStations().playables)
-        Log.d("STATIONS","Size: ${stations.size}")
         return stations
     }
 

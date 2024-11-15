@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.tneff.radiochallenge.R
 import com.tneff.radiochallenge.databinding.ItemRadioStationBinding
 import com.tneff.radiochallenge.stations.RadioStation
 
@@ -30,7 +31,14 @@ class RadioStationRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.city
+        val location = if (item.city.isNotEmpty()) {
+            item.city
+        } else if (item.country.isNotEmpty()) {
+            item.country
+        } else {
+            ""
+        }
+        holder.idView.text = location
         holder.contentView.text = item.name
         holder.itemView.setOnClickListener { onClick(item) }
     }
