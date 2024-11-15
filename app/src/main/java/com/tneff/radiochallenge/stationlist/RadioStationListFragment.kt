@@ -19,10 +19,12 @@ import kotlinx.coroutines.launch
  */
 class RadioStationListFragment : Fragment() {
 
-    private val viewModel: RadioStationListViewModel = RadioStationListViewModel()
     private lateinit var binding: FragmentRadioStationListBinding
     private lateinit var adapter: RadioStationRecyclerViewAdapter
 
+    // TODO: Use ViewModelProvider / Factory
+    private val viewModel: RadioStationListViewModel = RadioStationListViewModel()
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {

@@ -6,7 +6,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.tneff.radiochallenge.R
 import com.tneff.radiochallenge.databinding.ItemRadioStationBinding
 import com.tneff.radiochallenge.stations.RadioStation
 
@@ -18,6 +17,7 @@ class RadioStationRecyclerViewAdapter(
 
     fun submitList(newValues: List<RadioStation>) {
         values = newValues
+        // TODO: Replace with DiffUtil
         notifyDataSetChanged()
     }
 

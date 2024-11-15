@@ -1,12 +1,10 @@
 package com.tneff.radiochallenge.stations
 
-import android.util.Log
-
 
 class RadioStationLocalDataSource {
 
     // TODO: Replace with Room
-    suspend fun getRadioStations(): List<RadioStation> = stations
+    fun getRadioStations(): List<RadioStation> = stations
 
     fun storeStations(stations: List<RadioStation>) {
         // TODO: Replace with Singleton in Dependency injection
@@ -14,8 +12,6 @@ class RadioStationLocalDataSource {
     }
 
     fun getStation(stationId: String): RadioStation? {
-        Log.d("STATION","get $stationId")
-        Log.d("STATION","size ${stations.size}")
         return stations.find {
             it.id == stationId
         }
