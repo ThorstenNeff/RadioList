@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import com.tneff.radiochallenge.databinding.FragmentRadioStationDetailBinding
 import com.tneff.radiochallenge.stations.RadioStation
+import com.tneff.radiochallenge.stations.network.data.RadioStationDetails
 import kotlinx.coroutines.launch
 
 class RadioStationDetailFragment : Fragment() {
@@ -24,9 +25,11 @@ class RadioStationDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                val station = viewModel.loadStation(args.stationId)
-                updateStation(station)
+            viewModel.loadRadioStations(args.stationId)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.stationDetails.collect { station ->
+                    updateStation(station)
+                }
             }
         }
     }
@@ -39,7 +42,7 @@ class RadioStationDetailFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateStation(radioStation: RadioStation?) {
+    private fun updateStation(radioStation: RadioStationDetails?) {
         radioStation?.let { station ->
             val location = if (station.city.isNotEmpty()) {
                 station.city
@@ -53,6 +56,7 @@ class RadioStationDetailFragment : Fragment() {
                 stationNameTv.text = station.name
                 stationLocationTv.text = location
                 stationGenresTv.text = station.genres.joinToString(separator = ", ")
+                stationDescriptionTv.text = station.description
             }
         }
     }

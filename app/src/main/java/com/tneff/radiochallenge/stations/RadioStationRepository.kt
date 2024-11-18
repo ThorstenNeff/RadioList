@@ -1,5 +1,7 @@
 package com.tneff.radiochallenge.stations
 
+import com.tneff.radiochallenge.stations.network.data.RadioStationDetails
+
 class RadioStationRepository(
     private val networkDataSource: RadioStationNetworkDataSource = RadioStationNetworkDataSource(),
     private val localDataSource: RadioStationLocalDataSource = RadioStationLocalDataSource()
@@ -17,7 +19,17 @@ class RadioStationRepository(
         return stations
     }
 
-    fun getStation(radioId: String): RadioStation? {
-        return localDataSource.getStation(radioId)
+    suspend fun getStationDetails(radioId: String): RadioStationDetails? {
+        val stationDetail = localDataSource.getRadioStationDetail(radioId)
+        return stationDetail ?: run {
+             refreshDetails(radioId)
+        }
     }
+
+    suspend fun refreshDetails(radioId: String): RadioStationDetails? {
+        val stationDetail = networkDataSource.getRadioStationDetail(radioId)
+        stationDetail?.let { localDataSource.storeStationDetail(it) }
+        return stationDetail
+    }
+
 }

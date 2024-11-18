@@ -1,5 +1,7 @@
 package com.tneff.radiochallenge.stations
 
+import com.tneff.radiochallenge.stations.network.data.RadioStationDetails
+
 
 class RadioStationLocalDataSource {
 
@@ -7,17 +9,20 @@ class RadioStationLocalDataSource {
     fun getRadioStations(): List<RadioStation> = stations
 
     fun storeStations(stations: List<RadioStation>) {
-        // TODO: Replace with Singleton in Dependency injection
         RadioStationLocalDataSource.stations = stations
     }
 
-    fun getStation(stationId: String): RadioStation? {
-        return stations.find {
-            it.id == stationId
-        }
+    fun storeStationDetail(stationDetails: RadioStationDetails) {
+        radioStationDetails[stationDetails.id] = stationDetails
+    }
+
+    fun getRadioStationDetail(radioId: String): RadioStationDetails? {
+        return radioStationDetails[radioId]
     }
 
     companion object {
+        // TODO: Replace with Singleton in Dependency injection
         private var stations = listOf<RadioStation>()
+        private var radioStationDetails = mutableMapOf<String, RadioStationDetails>()
     }
 }
